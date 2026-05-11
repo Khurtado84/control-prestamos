@@ -890,7 +890,7 @@ function App() {
             <h1>Control Préstamos</h1>
           </div>
           <div className="creator-box">
-            <img src="/logo.png" alt="logo" className="logo-header" />
+            <img src="/control-prestamos/logo.png" alt="logo" className="logo-header" />
           </div>
         </header>
 
