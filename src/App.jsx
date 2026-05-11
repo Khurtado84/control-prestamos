@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { supabase } from "./lib/supabase";
+import LoginScreen from "./components/LoginScreen";
 import "./App.css";
 
 const ACCESS_KEY = "control-prestamos-access";
@@ -325,6 +327,7 @@ function matchesPdfFilter(loan, filter) {
 }
 
 function App() {
+  const [session, setSession] = useState(null);
   const access = useMemo(() => getSavedAccess(), []);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginPassword, setLoginPassword] = useState("");
@@ -385,6 +388,23 @@ function App() {
   useEffect(() => {
     localStorage.setItem(LOANS_KEY, JSON.stringify(loans));
   }, [loans]);
+
+useEffect(() => {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    setSession(session);
+  });
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setSession(session);
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
+
+
 
   useEffect(() => {
     if (!selectedLoanId && loans.length > 0) {
@@ -873,6 +893,12 @@ function App() {
               Ingresar
             </button>
 
+              <button
+               className="btn"
+               onClick={() => supabase.auth.signOut()}
+                >
+               Salir
+            </button>
             <small>Ing. Luis Carlos Hurtado Castañeda</small>
           </div>
         </div>
@@ -881,7 +907,9 @@ function App() {
       </div>
     );
   }
-
+if (!session) {
+  return <LoginScreen />;
+}
   return (
     <div className="app-shell">
       <div className="container">
