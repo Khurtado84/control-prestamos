@@ -4,7 +4,7 @@ import LoginScreen from "./components/LoginScreen";
 import "./App.css";
 
 const ACCESS_KEY = "control-prestamos-access";
-const DEFAULT_PASSWORD = "1234";
+const DEFAULT_PASSWORD = "****";
 const CLIENTS_KEY = "control-prestamos-clients";
 const LOANS_KEY = "control-prestamos-loans";
 
